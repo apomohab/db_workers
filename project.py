@@ -1,9 +1,7 @@
-#add all data in project for make website
-
 from db_workers import Base, Factory, Worker
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -15,25 +13,17 @@ DBsession = sessionmaker(bind = engine)
 
 session = DBsession()
 
+
 @app.route('/')
-@app.route('/factory')
-def factorypaint():
+@app.route('/factories/<int:factory_id>/')
+def factory(factory_id):
 
-    factory = session.query(Factory).filter_by(id=10).first()
-    workers = session.query (Worker).filter_by(factory_id=Factory.id) #must be write second name capital
+    factory = session.query( Factory ).filter_by(id=factory_id).first()
+    workers  = session.query(Worker).filter_by(factory_id = Factory.id)
 
-    output = ''
+    return render_template('menu.html',factory=factory,workers=workers)
 
-    for i in workers :
 
-        output += i.name
-        output += '</br>'
-        output += i.age
-        output += '</br>'
-        output += i.special
-        output += '</br>'
-
-    return output
 
 if __name__ == '__main__' :
 
