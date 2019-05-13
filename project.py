@@ -17,15 +17,14 @@ session = DBsession()
 
 @app.route('/')
 @app.route('/factory')
-
 def factorypaint():
 
-    factory = session.query(Factory).filter_by(id=10).all()
-    items = session.query(Worker).filter_by(factory_id=factory.id)
+    factory = session.query(Factory).filter_by(id=10).first()
+    workers = session.query (Worker).filter_by(factory_id=Factory.id) #must be write second name capital
 
     output = ''
 
-    for i in items :
+    for i in workers :
 
         output += i.name
         output += '</br>'
